@@ -1,4 +1,4 @@
-
+import List._
 sealed trait Option[+A] {
   def map[B](f: A => B): Option[B] = this match {
     case None => None
@@ -83,28 +83,11 @@ object Option {
   /*
   Here's an explicit recursive version:
   */
-  def sequence[A](a: List[Option[A]]): Option[List[A]] =
-    a match {
-      case Nil => Some(Nil)
-      case Cons(h, t ) => h flatMap (hh => sequence(t) map (Cons(hh, _)))
-    }
+
   /*
   It can also be implemented using `foldRight` and `map2`. The type annotation on `foldRight` is needed here; otherwise
   Scala wrongly infers the result type of the fold as `Some[Nil.type]` and reports a type error (try it!). This is an
   unfortunate consequence of Scala using subtyping to encode algebraic data types.
   */
-  def sequence_1[A](a: List[Option[A]]): Option[List[A]] =
-    a.foldRight[Option[List[A]]](Some(Nil))((x,y) => map2(x,y)(_ :: _))
 
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
-    a match {
-      case Nil => Some(Nil)
-      case h::t => map2(f(h), traverse(t)(f))(_ :: _)
-    }
-
-  def traverse_1[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
-    a.foldRight[Option[List[B]]](Some(Nil))((h,t) => map2(f(h),t)(_ :: _))
-
-  def sequenceViaTraverse[A](a: List[Option[A]]): Option[List[A]] =
-    traverse(a)(x => x)
 }

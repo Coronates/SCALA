@@ -6,11 +6,11 @@ case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 object Tree {
   def arbol = Branch(Branch(Leaf(7), Branch(Leaf(28),Leaf(32))), Leaf(3))
 
-  def main(args: Array[String]): Unit =
-    println(sizeViaFold(arbol))
-    //println(depth(arbol))
-    println(maximumViaFold(arbol))
-    println(map(arbol)(_ * 2))
+//  def main(args: Array[String]): Unit =
+//    println(sizeViaFold(arbol))
+//    //println(depth(arbol))
+//    println(maximumViaFold(arbol))
+//    println(map(arbol)(_ * 2))
 
   def size[A](t: Tree[A]):Int = t match{
     case Leaf(_)=> 1
@@ -30,7 +30,7 @@ object Tree {
   }
   //3.28
   def map[A,B](t: Tree[A])(f: A => B):Tree[B]= t match {
-    case Leaf(a)=> Leaf(f(a))+
+    case Leaf(a)=> Leaf(f(a))
 
     case Branch(l,r)=> Branch(map(l)(f),map(r)(f))
   }
